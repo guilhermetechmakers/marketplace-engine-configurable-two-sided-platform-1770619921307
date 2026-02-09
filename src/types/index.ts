@@ -127,3 +127,14 @@ export interface Refund {
   processedAt?: string
   createdAt: string
 }
+
+/** Login/Signup page user-scoped record (e.g. preferences or state). */
+export interface LoginSignupPage {
+  id: string
+  user_id: string
+  title: string
+  description?: string
+  status: string
+  created_at: string
+  updated_at: string
+}

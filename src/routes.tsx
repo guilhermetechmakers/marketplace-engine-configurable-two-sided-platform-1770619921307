@@ -7,6 +7,8 @@ import { Catalog } from '@/pages/catalog'
 import { ListingDetail } from '@/pages/listing-detail'
 import { Login } from '@/pages/login'
 import { Signup } from '@/pages/signup'
+import SignupPage from '@/pages/Login/SignupPage'
+import { VerifyEmail } from '@/pages/verify-email'
 import { ForgotPassword } from '@/pages/forgot-password'
 import { Checkout } from '@/pages/checkout'
 import { Onboarding } from '@/pages/onboarding'
@@ -45,6 +47,9 @@ const mainRoutes = {
     { path: 'login/moderator', element: <Navigate to="/login?role=moderator" replace /> },
     { path: 'login/admin', element: <Navigate to="/login?role=admin" replace /> },
     { path: 'signup', element: <Signup /> },
+    { path: 'login-signup', element: <SignupPage /> },
+    { path: 'login-/-signup-page', element: <Navigate to="/login-signup" replace /> },
+    { path: 'verify-email', element: <VerifyEmail /> },
     { path: 'forgot-password', element: <ForgotPassword /> },
     { path: 'checkout/:id', element: <RequireAuth><Checkout /></RequireAuth> },
     { path: 'onboarding', element: <RequireAuth><Onboarding /></RequireAuth> },

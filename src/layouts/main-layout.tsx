@@ -164,6 +164,7 @@ export function MainLayout() {
               <p className="font-medium text-foreground">Product</p>
               <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
                 <li><Link to="/catalog">Browse</Link></li>
+                <li><Link to="/login-signup">Log in / Sign up</Link></li>
                 <li><Link to="/help">Help</Link></li>
               </ul>
             </div>
