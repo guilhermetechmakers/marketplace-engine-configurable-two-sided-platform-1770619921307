@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -62,12 +62,12 @@ export function AuthForm({
   const [role, setRole] = React.useState<'buyer' | 'seller'>(defaultRole)
 
   const loginForm = useForm<AuthFormFields & { role?: 'buyer' | 'seller' }>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchema) as Resolver<AuthFormFields & { role?: 'buyer' | 'seller' }>,
     defaultValues: { email: '', password: '', role: defaultRole },
   })
 
   const signupForm = useForm<AuthFormFields>({
-    resolver: zodResolver(signupSchema),
+    resolver: zodResolver(signupSchema) as Resolver<AuthFormFields>,
     defaultValues: { email: '', password: '', role: defaultRole },
   })
 

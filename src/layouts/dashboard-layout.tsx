@@ -19,6 +19,7 @@ import {
   ClipboardList,
   AlertCircle,
   Scale,
+  SlidersHorizontal,
 } from 'lucide-react'
 import {
   Sheet,
@@ -32,10 +33,12 @@ const mainNav = [
   { to: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { to: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
   { to: '/dashboard/projects', label: 'Listings', icon: FolderKanban },
+  { to: '/dashboard/create-edit-listing', label: 'Create listing', icon: FolderKanban },
   { to: '/dashboard/messages', label: 'Messages', icon: MessageSquare },
   { to: '/dashboard/orders', label: 'Orders', icon: FileText },
   { to: '/dashboard/order-booking-history', label: 'Order / Booking History', icon: ClipboardList },
-  { to: '/dashboard/settings', label: 'Settings', icon: Settings },
+  { to: '/dashboard/settings', label: 'Settings', icon: Settings, exact: true },
+  { to: '/dashboard/settings/preferences', label: 'Preferences', icon: SlidersHorizontal },
 ]
 
 const adminNav = [
@@ -77,8 +80,10 @@ export function DashboardLayout() {
 
   const NavLinks = ({ list, className }: { list: typeof mainNav; className?: string }) => (
     <nav className={cn('flex flex-col gap-1', className)}>
-      {list.map(({ to, label, icon: Icon }) => {
-        const isActive = location.pathname === to || location.pathname.startsWith(to + '/')
+      {list.map(({ to, label, icon: Icon, exact }) => {
+        const isActive = exact
+          ? location.pathname === to
+          : location.pathname === to || location.pathname.startsWith(to + '/')
         return (
           <Link
             key={to}

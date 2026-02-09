@@ -50,7 +50,7 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAnalyticsReportQuery } from '@/hooks/use-analytics'
-import type { AnalyticsReport, AnalyticsDateRange, AnalyticsListingPerformance } from '@/types'
+import type { AnalyticsFunnelStage, AnalyticsReport, AnalyticsDateRange, AnalyticsListingPerformance } from '@/types'
 import { cn } from '@/lib/utils'
 
 const DATE_RANGE_OPTIONS: { value: AnalyticsDateRange; label: string }[] = [
@@ -368,14 +368,14 @@ export function DashboardAnalytics() {
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
                     <XAxis dataKey="date" className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} />
-                    <YAxis className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} tickFormatter={(v) => `$${v / 100}`} />
+                    <YAxis className="text-xs" tick={{ fill: 'hsl(var(--muted-foreground))' }} tickFormatter={(v: number) => `$${v / 100}`} />
                     <Tooltip
                       contentStyle={{
                         borderRadius: 'var(--radius)',
                         border: '1px solid hsl(var(--border))',
                       }}
                       formatter={([value]: [number]) => [formatCurrency(value, data.gmvSummary.currency), 'GMV']}
-                      labelFormatter={(label) => `Date: ${label}`}
+                      labelFormatter={(label: string) => `Date: ${label}`}
                     />
                     <Area
                       type="monotone"
@@ -424,7 +424,7 @@ export function DashboardAnalytics() {
                           ]}
                         />
                         <Bar dataKey="count" radius={[0, 4, 4, 0]}>
-                          {data.conversionFunnel.map((_, i) => (
+                          {data.conversionFunnel.map((_: AnalyticsFunnelStage, i: number) => (
                             <Cell key={i} fill={funnelColors[i % funnelColors.length]} />
                           ))}
                         </Bar>

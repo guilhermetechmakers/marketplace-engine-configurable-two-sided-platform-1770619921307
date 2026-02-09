@@ -30,6 +30,8 @@ import { DashboardDisputes } from '@/pages/dashboard/disputes'
 import { DashboardOrderDetail } from '@/pages/dashboard/order-detail'
 import BookingHistory from '@/pages/Order/BookingHistory'
 import BrowseListings from '@/pages/Catalog/BrowseListings'
+import EditListing from '@/pages/Create/EditListing'
+import PreferencesPage from '@/pages/Settings/Preferences'
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -53,7 +55,9 @@ const mainRoutes = {
     { path: 'signup', element: <Signup /> },
     { path: 'login-signup', element: <SignupPage /> },
     { path: 'login-/-signup-page', element: <Navigate to="/login-signup" replace /> },
+    { path: 'settings-/-preferences', element: <Navigate to="/dashboard/settings/preferences" replace /> },
     { path: 'order-/-booking-history', element: <Navigate to="/dashboard/order-booking-history" replace /> },
+    { path: 'create-/-edit-listing', element: <Navigate to="/dashboard/create-edit-listing" replace /> },
     { path: 'verify-email', element: <VerifyEmail /> },
     { path: 'forgot-password', element: <ForgotPassword /> },
     { path: 'checkout/:id', element: <RequireAuth><Checkout /></RequireAuth> },
@@ -78,11 +82,14 @@ const dashboardRoutes = {
     { path: 'orders', element: <DashboardOrders /> },
     { path: 'orders/:id', element: <DashboardOrderDetail /> },
     { path: 'settings', element: <DashboardSettings /> },
+    { path: 'settings/preferences', element: <PreferencesPage /> },
     { path: 'users', element: <DashboardUsers /> },
     { path: 'moderation', element: <DashboardModeration /> },
     { path: 'admin', element: <DashboardAdmin /> },
     { path: 'disputes', element: <DashboardDisputes /> },
     { path: 'order-booking-history', element: <BookingHistory /> },
+    { path: 'create-edit-listing', element: <EditListing /> },
+    { path: 'create-edit-listing/:id', element: <EditListing /> },
   ],
 }
 

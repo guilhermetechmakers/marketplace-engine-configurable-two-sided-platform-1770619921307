@@ -86,8 +86,8 @@ export function DashboardOrderDetail() {
           <h1 className="text-2xl font-semibold tracking-tight">Order {order.id}</h1>
           <p className="text-muted-foreground">Placed {new Date(order.createdAt).toLocaleDateString()}</p>
         </div>
-        <Badge variant={statusVariant[order.status]} className="w-fit">
-          {statusLabel[order.status]}
+        <Badge variant={statusVariant[order.status as OrderStatus]} className="w-fit">
+          {statusLabel[order.status as OrderStatus]}
         </Badge>
       </div>
 

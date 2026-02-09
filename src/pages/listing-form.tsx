@@ -25,7 +25,7 @@ export function ListingForm() {
   const isEdit = Boolean(id)
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as import('react-hook-form').Resolver<FormData>,
     defaultValues: { title: '', description: '', price: 0 },
   })
 

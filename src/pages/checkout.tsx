@@ -42,7 +42,7 @@ export function Checkout() {
     handleSubmit,
     formState: { errors },
   } = useForm<CheckoutForm>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(checkoutSchema) as import('react-hook-form').Resolver<CheckoutForm>,
     defaultValues: {
       cardNumber: '',
       expiry: '',

@@ -44,7 +44,7 @@ export function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) })
+  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) as import('react-hook-form').Resolver<LoginFormData> })
 
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true)

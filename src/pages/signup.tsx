@@ -32,7 +32,7 @@ export function Signup() {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as import('react-hook-form').Resolver<FormData>,
     defaultValues: { role: 'buyer' },
   })
 

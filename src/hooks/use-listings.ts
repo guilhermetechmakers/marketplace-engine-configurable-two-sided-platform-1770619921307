@@ -89,7 +89,7 @@ function mockBrowseListingsPage(params: BrowseListingsParams | undefined): Listi
 function useBrowseListingsInfiniteQuery(baseParams: Omit<BrowseListingsParams, 'cursor'> | undefined) {
   return useInfiniteQuery({
     queryKey: queryKeys.browse(baseParams ?? {}),
-    queryFn: async ({ pageParam }): Promise<ListingsResponse> => {
+    queryFn: async ({ pageParam }: { pageParam: string | undefined }): Promise<ListingsResponse> => {
       const params = { ...baseParams, cursor: pageParam }
       try {
         return await fetchBrowseListings(params)
@@ -98,7 +98,7 @@ function useBrowseListingsInfiniteQuery(baseParams: Omit<BrowseListingsParams, '
       }
     },
     initialPageParam: undefined as string | undefined,
-    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    getNextPageParam: (lastPage: ListingsResponse) => lastPage.nextCursor ?? undefined,
     enabled: true,
   })
 }

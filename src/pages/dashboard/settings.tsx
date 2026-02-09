@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -8,7 +9,7 @@ import { InputOTP } from '@/components/ui/input-otp'
 import { useAuth } from '@/contexts/auth-context'
 import { setup2FA, enable2FA } from '@/api/auth'
 import { toast } from 'sonner'
-import { User, Bell, Shield, ShieldCheck, Key } from 'lucide-react'
+import { User, Bell, Shield, ShieldCheck, Key, SlidersHorizontal } from 'lucide-react'
 
 type TwoFactorStep = 'idle' | 'setup' | 'verifying'
 
@@ -69,9 +70,17 @@ export function DashboardSettings() {
 
   return (
     <div className="space-y-6 animate-in">
-      <div>
-        <h1 className="text-2xl font-semibold">Settings</h1>
-        <p className="text-muted-foreground">Manage your account and preferences</p>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">Settings</h1>
+          <p className="text-muted-foreground">Manage your account and preferences</p>
+        </div>
+        <Button variant="outline" asChild className="gap-2 shrink-0">
+          <Link to="/dashboard/settings/preferences">
+            <SlidersHorizontal className="h-4 w-4" />
+            Full preferences
+          </Link>
+        </Button>
       </div>
 
       <Tabs defaultValue="profile" className="space-y-4">

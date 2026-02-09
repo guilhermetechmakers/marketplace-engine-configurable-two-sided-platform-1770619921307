@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
+import type { Listing } from '@/types'
 import { useListingsQuery } from '@/hooks/use-listings'
 import { useOrdersQuery } from '@/hooks/use-orders'
 import { Search, MapPin, Grid3X3, List, SlidersHorizontal, Package, ChevronRight, Sparkles } from 'lucide-react'
@@ -22,7 +23,7 @@ export function Catalog() {
     if (!location.trim()) return listings
     const loc = location.toLowerCase()
     return listings.filter(
-      (l) =>
+      (l: Listing) =>
         (l.attributes as { location?: string })?.location?.toLowerCase().includes(loc) ||
         l.title.toLowerCase().includes(loc)
     )
@@ -189,7 +190,7 @@ export function Catalog() {
               : 'flex flex-col gap-4'
           )}
         >
-          {filteredByLocation.map((listing, i) => (
+          {filteredByLocation.map((listing: Listing, i: number) => (
             <Card
               key={listing.id}
               className={cn(

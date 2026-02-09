@@ -14,7 +14,7 @@ const schema = z.object({ email: z.string().email('Invalid email') })
 type FormData = z.infer<typeof schema>
 
 export function ForgotPassword() {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) as import('react-hook-form').Resolver<FormData> })
 
   const onSubmit = (data: FormData) => {
     toast.success(`Reset link sent to ${data.email}`)

@@ -14,6 +14,7 @@ import {
   requestRefundOrderBooking,
   openDisputeOrderBooking,
 } from '@/api/order-booking-history'
+import type { ListOrderBookingHistoryResponse } from '@/api/order-booking-history'
 import type { OrderFiltersState } from '@/components/order-booking-history/FiltersSearch'
 import { FiltersSearch } from '@/components/order-booking-history/FiltersSearch'
 import { OrdersList } from '@/components/order-booking-history/OrdersList'
@@ -60,7 +61,7 @@ export default function BookingHistory() {
   } = useQuery({
     queryKey: ['order-booking-history', params],
     queryFn: () => fetchOrderBookingHistory(params),
-    placeholderData: (prev) => prev,
+    placeholderData: (prev: ListOrderBookingHistoryResponse | undefined) => prev,
   })
 
   const { data: detail, isLoading: detailLoading } = useQuery({
@@ -86,7 +87,7 @@ export default function BookingHistory() {
   const refundMutation = useMutation({
     mutationFn: ({ id, reason }: { id: string; reason?: string }) =>
       requestRefundOrderBooking(id, reason),
-    onSuccess: (_, { id }) => {
+    onSuccess: (_: unknown, { id }: { id: string }) => {
       queryClient.invalidateQueries({ queryKey: ['order-booking-history'] })
       queryClient.invalidateQueries({ queryKey: ['order-booking-detail', id] })
       toast.success('Refund requested')
@@ -100,7 +101,7 @@ export default function BookingHistory() {
   const disputeMutation = useMutation({
     mutationFn: ({ id, reason, description }: { id: string; reason: string; description?: string }) =>
       openDisputeOrderBooking(id, { reason, description }),
-    onSuccess: (_, { id }) => {
+    onSuccess: (_: unknown, { id }: { id: string }) => {
       queryClient.invalidateQueries({ queryKey: ['order-booking-history'] })
       queryClient.invalidateQueries({ queryKey: ['order-booking-detail', id] })
       toast.success('Dispute opened')

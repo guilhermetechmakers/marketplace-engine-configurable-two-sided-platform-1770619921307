@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
+import type { ListingReview } from '@/types'
 import { useListingQuery } from '@/hooks/use-listings'
 import { MessageCircle, Share2, Heart, Star, ArrowLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -140,7 +141,7 @@ export function ListingDetail() {
                 </h3>
               </CardHeader>
               <CardContent className="space-y-4">
-                {reviews.map((r) => (
+                {reviews.map((r: ListingReview) => (
                   <div key={r.id} className="rounded-lg border border-border bg-muted/30 p-4">
                     <div className="flex items-center gap-2">
                       <div className="flex gap-0.5">

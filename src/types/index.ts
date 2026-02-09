@@ -333,3 +333,210 @@ export interface AnalyticsReport {
 
 /** Export format for analytics reports */
 export type AnalyticsExportFormat = 'csv' | 'json'
+
+/** Settings / Preferences (user-scoped settings record). */
+export interface SettingsPreferences {
+  id: string
+  user_id: string
+  title: string
+  description?: string
+  status: string
+  created_at: string
+  updated_at: string
+}
+
+/** Field type for category-driven listing form. */
+export type ListingFieldType =
+  | 'text'
+  | 'number'
+  | 'select'
+  | 'multi-select'
+  | 'date'
+  | 'location'
+  | 'boolean'
+  | 'rich-text'
+
+/** Single option for select / multi-select. */
+export interface ListingFieldOption {
+  value: string
+  label: string
+}
+
+/** Conditional visibility: show field when another field matches value. */
+export interface ListingFieldCondition {
+  field: string
+  operator: 'eq' | 'neq' | 'in' | 'notIn'
+  value: string | string[] | number | boolean
+}
+
+/** Schema for one dynamic listing form field. */
+export interface ListingFieldSchema {
+  key: string
+  label: string
+  type: ListingFieldType
+  required?: boolean
+  placeholder?: string
+  help?: string
+  example?: string
+  min?: number
+  max?: number
+  step?: number
+  options?: ListingFieldOption[]
+  /** Conditional display (e.g. show only when category is "rental"). */
+  condition?: ListingFieldCondition
+  default?: string | number | boolean | string[]
+}
+
+/** Category with listing form schema (for create/edit listing). */
+export interface CategoryListingSchema {
+  categoryId: string
+  categoryName: string
+  slug: string
+  fields: ListingFieldSchema[]
+}
+
+/** Pricing type for listing. */
+export type PricingType = 'single' | 'tiered' | 'hourly' | 'daily'
+
+/** Single price or rate entry. */
+export interface ListingPriceTier {
+  label: string
+  amountCents: number
+  minQuantity?: number
+  maxQuantity?: number
+}
+
+/** Pricing config for create/edit listing. */
+export interface ListingPricingConfig {
+  type: PricingType
+  currency: string
+  singleAmountCents?: number
+  tiers?: ListingPriceTier[]
+  hourlyRateCents?: number
+  dailyRateCents?: number
+  taxRate?: number
+  shippingCents?: number
+}
+
+/** Availability slot (for booking mode). */
+export interface AvailabilitySlot {
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+}
+
+/** Blackout date range. */
+export interface BlackoutDateRange {
+  start: string
+  end: string
+}
+
+/** Availability config for create/edit listing. */
+export interface ListingAvailabilityConfig {
+  slots: AvailabilitySlot[]
+  blackoutDates: BlackoutDateRange[]
+  timezone?: string
+}
+
+/** User profile settings (name, bio, location, language). */
+export interface UserProfileSettings {
+  displayName: string
+  bio?: string
+  location?: string
+  language: string
+}
+
+/** Notification channel. */
+export type NotificationChannel = 'email' | 'push' | 'in_app'
+
+/** Event type for notification toggles. */
+export type NotificationEventType =
+  | 'orders'
+  | 'messages'
+  | 'listings'
+  | 'reviews'
+  | 'payouts'
+  | 'promotions'
+  | 'security'
+
+/** Per-event notification preferences. */
+export interface NotificationPreferences {
+  eventType: NotificationEventType
+  email: boolean
+  push: boolean
+  inApp: boolean
+}
+
+/** Saved payment method (card). */
+export interface SavedCard {
+  id: string
+  brand: string
+  last4: string
+  expMonth: number
+  expYear: number
+  isDefault?: boolean
+}
+
+/** Bank account for sellers (payout). */
+export interface SavedBankAccount {
+  id: string
+  bankName: string
+  last4: string
+  isDefault?: boolean
+}
+
+/** Session record for session management. */
+export interface UserSession {
+  id: string
+  device?: string
+  lastActive: string
+  current: boolean
+}
+
+/** Create / Edit Listing record (category-driven dynamic form). */
+export interface CreateEditListing {
+  id: string
+  user_id: string
+  title: string
+  description?: string
+  status: string
+  category_id?: string
+  created_at: string
+  updated_at: string
+}
+
+/** Field type for category-driven listing form schema. */
+export type ListingFormFieldType =
+  | 'text'
+  | 'number'
+  | 'select'
+  | 'multi-select'
+  | 'date'
+  | 'location'
+  | 'boolean'
+  | 'rich-text'
+
+/** Single field definition in listing form schema. */
+export interface ListingFormFieldSchema {
+  key: string
+  label: string
+  type: ListingFormFieldType
+  required?: boolean
+  placeholder?: string
+  hint?: string
+  example?: string
+  min?: number
+  max?: number
+  step?: number
+  options?: { value: string; label: string }[]
+  /** Show only when another field has one of these values (conditional). */
+  showWhen?: { field: string; oneOf: (string | number | boolean)[] }
+}
+
+/** Category config for create/edit listing (form schema). */
+export interface ListingCategorySchema {
+  categoryId: string
+  categoryName: string
+  slug: string
+  fields: ListingFormFieldSchema[]
+}

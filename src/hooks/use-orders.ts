@@ -42,7 +42,7 @@ export function useOrdersQuery(params?: { role?: 'buyer' | 'seller'; status?: st
 export function useOrderQuery(id: string | undefined, enabled = true) {
   return useQuery({
     queryKey: queryKeys.detail(id ?? ''),
-    queryFn: async () => {
+    queryFn: async (): Promise<Order> => {
       try {
         if (!id) throw new Error('No id')
         const res = await fetchOrder(id)

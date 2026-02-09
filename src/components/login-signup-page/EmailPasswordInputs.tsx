@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type { UseFormRegister, FieldErrors } from 'react-hook-form'
+import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'

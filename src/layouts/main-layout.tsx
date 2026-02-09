@@ -21,6 +21,7 @@ import {
 const navLinks = [
   { to: '/catalog', label: 'Browse' },
   { to: '/catalog-/-browse-listings', label: 'Browse Listings' },
+  { to: '/create-/-edit-listing', label: 'Create listing' },
   { to: '/', label: 'How it works' },
   { to: '/help', label: 'Help' },
 ]

@@ -61,7 +61,7 @@ import {
   updateDisputeStatus,
   processRefund,
 } from '@/api/disputes'
-import type { Dispute, DisputeStatus } from '@/types'
+import type { Dispute, DisputeEvidence, DisputeStatus } from '@/types'
 
 const STATUS_OPTIONS: { value: string; label: string }[] = [
   { value: 'all', label: 'All statuses' },
@@ -117,7 +117,7 @@ export function DashboardDisputes() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['disputes', statusParam, search],
     queryFn: () => fetchDisputes({ status: statusParam, search: search || undefined }),
-    placeholderData: (prev) => prev,
+    placeholderData: (prev: { disputes: Dispute[] } | undefined) => prev,
   })
 
   const disputes = data?.disputes ?? []
@@ -400,7 +400,7 @@ export function DashboardDisputes() {
                     Evidence
                   </h4>
                   <ul className="space-y-2">
-                    {detailDispute.evidence.map((ev) => (
+                    {detailDispute.evidence.map((ev: DisputeEvidence) => (
                       <li
                         key={ev.id}
                         className="rounded-md border border-border bg-card p-3 text-sm"

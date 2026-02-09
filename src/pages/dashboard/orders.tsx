@@ -153,7 +153,7 @@ function OrdersTable({ orders, role }: { orders: Order[]; role: 'buyer' | 'selle
                                 toast.success('Refund requested')
                                 setRefundOrderId(null)
                               },
-                              onError: (e) => toast.error(e?.message ?? 'Refund request failed'),
+                              onError: (e: Error & { message?: string }) => toast.error(e?.message ?? 'Refund request failed'),
                             }
                           )
                         }}
@@ -338,7 +338,7 @@ export function DashboardOrders() {
               )}
               {!payoutsLoading && payouts.length > 0 && (
                 <ul className="space-y-3">
-                  {payouts.map((p) => (
+                  {payouts.map((p: Payout) => (
                     <li
                       key={p.id}
                       className="flex flex-wrap items-center justify-between rounded-lg border border-border bg-card p-4 transition-shadow hover:shadow-card"
@@ -347,7 +347,7 @@ export function DashboardOrders() {
                         <p className="font-mono text-sm text-muted-foreground">{p.id}</p>
                         <p className="font-semibold">${(p.amountCents / 100).toFixed(2)} {p.currency}</p>
                       </div>
-                      <Badge variant={payoutStatusVariant[p.status]}>{p.status}</Badge>
+                      <Badge variant={payoutStatusVariant[p.status as keyof typeof payoutStatusVariant]}>{p.status}</Badge>
                       {p.paidAt && (
                         <span className="text-xs text-muted-foreground w-full mt-1">
                           Paid {new Date(p.paidAt).toLocaleDateString()}

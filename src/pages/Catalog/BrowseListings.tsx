@@ -14,7 +14,7 @@ import { Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useBrowseListingsInfiniteQuery } from '@/hooks/use-listings'
 import { CATEGORY_TREE } from '@/config/catalog-browse-listings'
-import type { BrowseListingsFilters } from '@/types'
+import type { BrowseListingsFilters, Listing } from '@/types'
 
 const DEFAULT_FILTERS: BrowseListingsFilters = {
   keyword: '',
@@ -54,7 +54,7 @@ export default function BrowseListings() {
   const { data, isLoading, isError, error, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useBrowseListingsInfiniteQuery(apiParams)
   const listings = useMemo(
-    () => data?.pages.flatMap((p) => p.listings) ?? [],
+    () => data?.pages.flatMap((p: { listings: Listing[] }) => p.listings) ?? [],
     [data?.pages]
   )
   const total = data?.pages[0]?.total ?? 0
