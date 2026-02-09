@@ -220,3 +220,116 @@ export interface OrderMessage {
   sender_id: string
   created_at: string
 }
+
+/** Catalog / Browse Listings (user-scoped or saved search record). */
+export interface CatalogBrowseListings {
+  id: string
+  user_id: string
+  title: string
+  description?: string
+  status: string
+  created_at: string
+  updated_at: string
+}
+
+/** Sort option for browse listings. */
+export type BrowseListingsSort =
+  | 'relevance'
+  | 'newest'
+  | 'price_asc'
+  | 'price_desc'
+  | 'rating'
+
+/** View mode for browse listings. */
+export type BrowseListingsView = 'grid' | 'list' | 'map'
+
+/** Search/filter state for browse listings. */
+export interface BrowseListingsFilters {
+  keyword: string
+  location: string
+  radiusKm: number
+  categoryIds: string[]
+  sort: BrowseListingsSort
+  view: BrowseListingsView
+  /** Dynamic filter values keyed by attribute name (e.g. priceMin, priceMax, duration). */
+  attributes: Record<string, string | number | number[] | string[]>
+}
+
+/** Category config node for hierarchical facets. */
+export interface CategoryConfigNode {
+  id: string
+  name: string
+  slug: string
+  children?: CategoryConfigNode[]
+  /** Schema for dynamic filters: type and options. */
+  schema?: Record<string, { type: 'range' | 'select' | 'checkbox'; min?: number; max?: number; step?: number; options?: { value: string; label: string }[] }>
+}
+
+export type AnalyticsDateRange = '7d' | '30d' | '90d'
+
+/** GMV and revenue metrics */
+export interface AnalyticsGmvSummary {
+  gmvCents: number
+  gmvCentsPrevious: number
+  orderCount: number
+  orderCountPrevious: number
+  currency: string
+}
+
+/** Time-series point for GMV chart */
+export interface AnalyticsGmvPoint {
+  date: string
+  gmvCents: number
+  orderCount: number
+}
+
+/** Conversion funnel stage */
+export interface AnalyticsFunnelStage {
+  name: string
+  count: number
+  percentage: number
+}
+
+/** Listings performance metric */
+export interface AnalyticsListingPerformance {
+  listingId: string
+  title: string
+  views: number
+  conversions: number
+  conversionRate: number
+  gmvCents: number
+  currency: string
+}
+
+/** Disputes summary for analytics */
+export interface AnalyticsDisputesSummary {
+  open: number
+  underReview: number
+  resolved: number
+  totalAmountCents: number
+  currency: string
+  trend: number
+}
+
+/** Moderation metrics */
+export interface AnalyticsModerationSummary {
+  pendingReview: number
+  approved: number
+  rejected: number
+  avgResolutionHours: number
+  trend: number
+}
+
+/** Aggregated analytics response */
+export interface AnalyticsReport {
+  dateRange: AnalyticsDateRange
+  gmvSummary: AnalyticsGmvSummary
+  gmvTimeSeries: AnalyticsGmvPoint[]
+  conversionFunnel: AnalyticsFunnelStage[]
+  listingsPerformance: AnalyticsListingPerformance[]
+  disputesSummary: AnalyticsDisputesSummary
+  moderationSummary: AnalyticsModerationSummary
+}
+
+/** Export format for analytics reports */
+export type AnalyticsExportFormat = 'csv' | 'json'

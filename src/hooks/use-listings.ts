@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { fetchListings, fetchListing, type ListingsResponse, type ListingDetailResponse } from '@/api/listings'
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { fetchListings, fetchListing, fetchBrowseListings, type ListingsResponse, type ListingDetailResponse, type BrowseListingsParams } from '@/api/listings'
 import type { Listing } from '@/types'
 
 const MOCK_LISTINGS: Listing[] = [
@@ -14,6 +14,7 @@ const MOCK_LISTINGS: Listing[] = [
 const queryKeys = {
   list: (params?: { q?: string; categoryId?: string }) => ['listings', params] as const,
   detail: (id: string) => ['listings', id] as const,
+  browse: (params?: BrowseListingsParams) => ['listings', 'browse', params] as const,
 }
 
 function useListingsQuery(params?: { q?: string; categoryId?: string; limit?: number }) {
@@ -51,4 +52,55 @@ function useListingQuery(id: string | undefined, enabled = true) {
   })
 }
 
-export { useListingsQuery, useListingQuery, queryKeys as listingQueryKeys }
+function useBrowseListingsQuery(params: BrowseListingsParams | undefined) {
+  return useQuery({
+    queryKey: queryKeys.browse(params),
+    queryFn: async (): Promise<ListingsResponse> => {
+      try {
+        return await fetchBrowseListings(params)
+      } catch {
+        return mockBrowseListingsPage(params)
+      }
+    },
+    enabled: true,
+  })
+}
+
+function mockBrowseListingsPage(params: BrowseListingsParams | undefined): ListingsResponse {
+  let list = [...MOCK_LISTINGS]
+  if (params?.q) {
+    const q = String(params.q).toLowerCase()
+    list = list.filter((l) => l.title.toLowerCase().includes(q) || l.description?.toLowerCase().includes(q))
+  }
+  if (params?.categoryId) list = list.filter((l) => l.categoryId === params.categoryId)
+  if (params?.categoryIds?.length) list = list.filter((l) => params!.categoryIds!.includes(l.categoryId))
+  if (params?.sort === 'price_asc') list.sort((a, b) => a.price - b.price)
+  if (params?.sort === 'price_desc') list.sort((a, b) => b.price - a.price)
+  if (params?.sort === 'newest') list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  const limit = params?.limit ?? 24
+  const cursor = params?.cursor ? parseInt(String(params.cursor), 10) : 0
+  return {
+    listings: list.slice(cursor, cursor + limit),
+    total: list.length,
+    nextCursor: cursor + limit < list.length ? String(cursor + limit) : null,
+  }
+}
+
+function useBrowseListingsInfiniteQuery(baseParams: Omit<BrowseListingsParams, 'cursor'> | undefined) {
+  return useInfiniteQuery({
+    queryKey: queryKeys.browse(baseParams ?? {}),
+    queryFn: async ({ pageParam }): Promise<ListingsResponse> => {
+      const params = { ...baseParams, cursor: pageParam }
+      try {
+        return await fetchBrowseListings(params)
+      } catch {
+        return mockBrowseListingsPage(params)
+      }
+    },
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    enabled: true,
+  })
+}
+
+export { useListingsQuery, useListingQuery, useBrowseListingsQuery, useBrowseListingsInfiniteQuery, queryKeys as listingQueryKeys }

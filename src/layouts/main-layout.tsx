@@ -20,6 +20,7 @@ import {
 
 const navLinks = [
   { to: '/catalog', label: 'Browse' },
+  { to: '/catalog-/-browse-listings', label: 'Browse Listings' },
   { to: '/', label: 'How it works' },
   { to: '/help', label: 'Help' },
 ]

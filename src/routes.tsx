@@ -29,6 +29,7 @@ import { DashboardAdmin } from '@/pages/dashboard/admin'
 import { DashboardDisputes } from '@/pages/dashboard/disputes'
 import { DashboardOrderDetail } from '@/pages/dashboard/order-detail'
 import BookingHistory from '@/pages/Order/BookingHistory'
+import BrowseListings from '@/pages/Catalog/BrowseListings'
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -42,6 +43,7 @@ const mainRoutes = {
   children: [
     { index: true, element: <Landing /> },
     { path: 'catalog', element: <Catalog /> },
+    { path: 'catalog-/-browse-listings', element: <BrowseListings /> },
     { path: 'listing/:id', element: <ListingDetail /> },
     { path: 'listing/new', element: <RequireAuth><ListingForm /></RequireAuth> },
     { path: 'listing/:id/edit', element: <RequireAuth><ListingForm /></RequireAuth> },
