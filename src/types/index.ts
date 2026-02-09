@@ -7,7 +7,21 @@ export interface User {
   avatarUrl?: string
   role: Role
   emailVerified: boolean
+  twoFactorEnabled?: boolean
   createdAt: string
+}
+
+/** 2FA - Session pending two-factor verification */
+export interface SessionPending2FA {
+  sessionId: string
+  email: string
+  role: Role
+}
+
+/** 2FA - Setup response from backend */
+export interface TwoFactorSetup {
+  secret: string
+  qrCodeUrl: string
 }
 
 export interface Listing {

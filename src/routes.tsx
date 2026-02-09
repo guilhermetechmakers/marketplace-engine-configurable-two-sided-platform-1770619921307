@@ -42,6 +42,8 @@ const mainRoutes = {
     { path: 'listing/new', element: <RequireAuth><ListingForm /></RequireAuth> },
     { path: 'listing/:id/edit', element: <RequireAuth><ListingForm /></RequireAuth> },
     { path: 'login', element: <Login /> },
+    { path: 'login/moderator', element: <Navigate to="/login?role=moderator" replace /> },
+    { path: 'login/admin', element: <Navigate to="/login?role=admin" replace /> },
     { path: 'signup', element: <Signup /> },
     { path: 'forgot-password', element: <ForgotPassword /> },
     { path: 'checkout/:id', element: <RequireAuth><Checkout /></RequireAuth> },

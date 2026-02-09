@@ -168,6 +168,13 @@ export function MainLayout() {
               </ul>
             </div>
             <div>
+              <p className="font-medium text-foreground">Staff</p>
+              <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                <li><Link to="/login?role=moderator">Moderator login</Link></li>
+                <li><Link to="/login?role=admin">Admin login</Link></li>
+              </ul>
+            </div>
+            <div>
               <p className="font-medium text-foreground">Legal</p>
               <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
                 <li><Link to="/legal/privacy">Privacy</Link></li>
