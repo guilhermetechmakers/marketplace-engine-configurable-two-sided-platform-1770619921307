@@ -49,15 +49,51 @@ export interface Category {
   schema?: Record<string, unknown>
 }
 
+/** Order/booking state machine – configurable lifecycle */
+export type OrderStatus =
+  | 'pending'      // created, awaiting payment
+  | 'confirmed'    // paid, confirmed
+  | 'in_progress'  // booking in progress
+  | 'completed'    // fulfilled
+  | 'cancelled'    // cancelled by user or system
+  | 'refunded'     // refund processed
+  | 'disputed'     // dispute opened
+
 export interface Order {
   id: string
   listingId: string
   listing?: Listing
   buyerId: string
   sellerId: string
-  status: string
+  status: OrderStatus
   totalCents: number
   currency: string
+  quantity?: number
+  createdAt: string
+  updatedAt?: string
+}
+
+/** Payout record for seller */
+export interface Payout {
+  id: string
+  sellerId: string
+  amountCents: number
+  currency: string
+  status: 'pending' | 'processing' | 'paid' | 'failed'
+  orderIds: string[]
+  paidAt?: string
+  createdAt: string
+}
+
+/** Listing review for display on listing detail */
+export interface ListingReview {
+  id: string
+  listingId: string
+  orderId: string
+  authorId: string
+  author?: User
+  rating: number
+  body?: string
   createdAt: string
 }
 
@@ -137,4 +173,50 @@ export interface LoginSignupPage {
   status: string
   created_at: string
   updated_at: string
+}
+
+/** Transaction mode for order/booking lifecycle. */
+export type OrderTransactionMode = 'checkout' | 'booking' | 'inquiry'
+
+/** Order / Booking History record (user-facing list of orders/bookings). */
+export interface OrderBookingHistory {
+  id: string
+  user_id: string
+  title: string
+  description?: string
+  status: string
+  transaction_mode?: OrderTransactionMode
+  amount_cents?: number
+  currency?: string
+  created_at: string
+  updated_at: string
+}
+
+/** Timeline event for order detail. */
+export interface OrderTimelineEvent {
+  id: string
+  order_id: string
+  type: string
+  label: string
+  payload?: Record<string, unknown>
+  created_at: string
+}
+
+/** Receipt line for order detail. */
+export interface OrderReceipt {
+  id: string
+  order_id: string
+  label: string
+  amount_cents: number
+  currency: string
+  created_at: string
+}
+
+/** Message thread or message for order detail. */
+export interface OrderMessage {
+  id: string
+  order_id: string
+  body: string
+  sender_id: string
+  created_at: string
 }

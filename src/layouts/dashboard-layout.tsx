@@ -16,6 +16,7 @@ import {
   Shield,
   MessageSquare,
   FileText,
+  ClipboardList,
   AlertCircle,
   Scale,
 } from 'lucide-react'
@@ -33,6 +34,7 @@ const mainNav = [
   { to: '/dashboard/projects', label: 'Listings', icon: FolderKanban },
   { to: '/dashboard/messages', label: 'Messages', icon: MessageSquare },
   { to: '/dashboard/orders', label: 'Orders', icon: FileText },
+  { to: '/dashboard/order-booking-history', label: 'Order / Booking History', icon: ClipboardList },
   { to: '/dashboard/settings', label: 'Settings', icon: Settings },
 ]
 
