@@ -5,6 +5,11 @@ import { useAuth } from '@/contexts/auth-context'
 import { toast } from 'sonner'
 import type { SocialProvider } from '@/components/login-signup-page/SocialLoginButtons'
 import { Mail } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
+
+const META_DESCRIPTION =
+  'Log in or create an account to buy or sell on the marketplace. Secure sign-in with email or social providers.'
 
 const PROGRESS_STEPS = [
   { id: 1, label: 'Account' },
@@ -18,6 +23,11 @@ export default function SignupPage() {
 
   useEffect(() => {
     document.title = 'Log in or Sign up | Marketplace'
+    const meta = document.querySelector('meta[name="description"]')
+    if (meta) meta.setAttribute('content', META_DESCRIPTION)
+    return () => {
+      document.title = 'Marketplace'
+    }
   }, [])
 
   useEffect(() => {
@@ -86,31 +96,64 @@ export default function SignupPage() {
 
   if (isAuthenticated && user) {
     return (
-      <div className="flex min-h-[80vh] items-center justify-center px-4 py-12 animate-in">
-        <div className="h-8 w-8 animate-pulse rounded-full bg-primary/20" aria-hidden />
+      <div
+        className={cn(
+          'auth-page-bg flex min-h-[80vh] flex-col items-center justify-center px-4 py-12',
+          'animate-in'
+        )}
+        role="status"
+        aria-live="polite"
+        aria-label="Redirecting"
+      >
+        <Card className="w-full max-w-md overflow-hidden border-0 shadow-card-hover">
+          <CardContent className="p-8">
+            <div className="space-y-4">
+              <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
+              <div className="h-4 w-1/2 animate-pulse rounded bg-muted" />
+              <div className="h-10 w-full animate-pulse rounded-lg bg-muted" />
+              <div className="h-4 w-2/3 animate-pulse rounded bg-muted" />
+            </div>
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              Taking you to your dashboard…
+            </p>
+          </CardContent>
+        </Card>
       </div>
     )
   }
 
   return (
-    <div className="flex min-h-[80vh] flex-col items-center justify-center px-4 py-12 animate-in">
-      <AuthForm
-        defaultMode="login"
-        defaultRole="buyer"
-        onSubmit={handleSubmit}
-        onSocialLogin={handleSocialLogin}
-        isLoading={isLoading}
-        showProgress={false}
-        currentProgressStep={1}
-        progressSteps={PROGRESS_STEPS}
-      />
-      <Link
-        to="/forgot-password"
-        className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+    <div
+      className={cn(
+        'auth-page-bg flex min-h-[80vh] flex-col items-center justify-center px-4 py-12',
+        'animate-in'
+      )}
+    >
+      <section
+        className="w-full max-w-md"
+        aria-labelledby="auth-heading"
       >
-        <Mail className="h-4 w-4" />
-        Forgot password?
-      </Link>
+        <h1 id="auth-heading" className="sr-only">
+          Log in or create an account
+        </h1>
+        <AuthForm
+          defaultMode="login"
+          defaultRole="buyer"
+          onSubmit={handleSubmit}
+          onSocialLogin={handleSocialLogin}
+          isLoading={isLoading}
+          showProgress={true}
+          currentProgressStep={1}
+          progressSteps={PROGRESS_STEPS}
+        />
+        <Link
+          to="/forgot-password"
+          className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+        >
+          <Mail className="h-4 w-4" aria-hidden />
+          Forgot password?
+        </Link>
+      </section>
     </div>
   )
 }

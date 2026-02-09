@@ -55,9 +55,9 @@ export interface OrderDetailSheetProps {
   }) | null
   isLoading: boolean
   onClose: () => void
-  onOpenDispute: (orderId: string) => void
+  onOpenDispute: (orderId: string, payload?: { reason: string; description?: string }) => void
   onRequestRefund?: (orderId: string) => void
-  onContactSeller?: (orderId: string) => void
+  onContactSeller?: () => void
 }
 
 /** Order detail: timeline of events, receipts, messages, dispute button. */
@@ -90,7 +90,7 @@ export function OrderDetailSheet({
             </div>
           ) : detail ? (
             <div className="space-y-6 animate-in">
-              <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
+              <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-2 bg-gradient-to-br from-card to-muted/50 shadow-card">
                 <div className="flex justify-between items-start gap-2">
                   <span className="text-sm font-medium">{detail.title}</span>
                   <Badge variant={statusVariant(detail.status)}>
@@ -117,9 +117,9 @@ export function OrderDetailSheet({
               </div>
 
               {detail.timeline && detail.timeline.length > 0 && (
-                <div>
-                  <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
-                    <Clock className="h-4 w-4" />
+                <div className="rounded-lg border border-border bg-card p-4">
+                  <h4 className="text-sm font-medium flex items-center gap-2 mb-3">
+                    <Clock className="h-4 w-4 text-primary" />
                     Timeline
                   </h4>
                   <ul className="space-y-3">
@@ -132,7 +132,7 @@ export function OrderDetailSheet({
                       .map((event) => (
                         <li
                           key={event.id}
-                          className="flex gap-3 text-sm border-l-2 border-primary/30 pl-3 py-1"
+                          className="flex gap-3 text-sm border-l-2 border-primary/40 pl-3 py-1"
                         >
                           <span className="text-muted-foreground shrink-0">
                             {formatDate(event.created_at)}
@@ -145,16 +145,16 @@ export function OrderDetailSheet({
               )}
 
               {detail.receipts && detail.receipts.length > 0 && (
-                <div>
-                  <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
-                    <Receipt className="h-4 w-4" />
+                <div className="rounded-lg border border-border bg-card p-4">
+                  <h4 className="text-sm font-medium flex items-center gap-2 mb-3">
+                    <Receipt className="h-4 w-4 text-primary" />
                     Receipts
                   </h4>
                   <ul className="space-y-2">
                     {detail.receipts.map((r) => (
                       <li
                         key={r.id}
-                        className="flex justify-between items-center rounded-md border border-border bg-card p-3 text-sm"
+                        className="flex justify-between items-center rounded-lg border border-border bg-muted/30 p-3 text-sm"
                       >
                         <span>{r.label}</span>
                         <span className="font-medium">
@@ -167,16 +167,16 @@ export function OrderDetailSheet({
               )}
 
               {detail.messages && detail.messages.length > 0 && (
-                <div>
-                  <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
-                    <MessageSquare className="h-4 w-4" />
+                <div className="rounded-lg border border-border bg-card p-4">
+                  <h4 className="text-sm font-medium flex items-center gap-2 mb-3">
+                    <MessageSquare className="h-4 w-4 text-primary" />
                     Messages
                   </h4>
                   <ul className="space-y-2">
                     {detail.messages.map((m) => (
                       <li
                         key={m.id}
-                        className="rounded-md border border-border bg-card p-3 text-sm"
+                        className="rounded-lg border border-border bg-muted/30 p-3 text-sm"
                       >
                         <p className="text-muted-foreground text-xs mb-1">
                           {formatDate(m.created_at)}
@@ -190,12 +190,8 @@ export function OrderDetailSheet({
 
               <div className="pt-4 border-t border-border">
                 <DisputeRefundCTA
-                  onOpenDispute={() => detail.id && onOpenDispute(detail.id)}
-                  onContactSeller={
-                    onContactSeller
-                      ? () => detail.id && onContactSeller(detail.id)
-                      : undefined
-                  }
+                  onOpenDisputeSubmit={(payload) => detail.id && onOpenDispute(detail.id, payload)}
+                  onContactSeller={onContactSeller}
                   canRequestRefund={detail.status === 'completed'}
                   onRequestRefund={
                     onRequestRefund && detail.status === 'completed'

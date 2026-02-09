@@ -540,3 +540,52 @@ export interface ListingCategorySchema {
   slug: string
   fields: ListingFormFieldSchema[]
 }
+
+/** Platform brand logo (single logo for header/sidebar). */
+export interface BrandLogo {
+  id?: string
+  url: string
+  altText?: string
+  updatedAt?: string
+}
+
+/** Monitoring & Error Tracking (Sentry / Datadog) */
+
+export type MonitoringDateRange = '24h' | '7d' | '30d'
+
+/** Single error/exception event for monitoring dashboard */
+export interface MonitoringErrorEvent {
+  id: string
+  message: string
+  type: 'error' | 'warning' | 'info'
+  source?: string
+  path?: string
+  status?: number
+  timestamp: string
+  count?: number
+}
+
+/** Error summary for monitoring overview */
+export interface MonitoringErrorSummary {
+  totalErrors: number
+  totalWarnings: number
+  unresolvedCount: number
+  trendPercent: number
+  period: MonitoringDateRange
+}
+
+/** Health/availability snapshot */
+export interface MonitoringHealthSnapshot {
+  status: 'healthy' | 'degraded' | 'outage'
+  uptimePercent?: number
+  lastChecked: string
+}
+
+/** Full monitoring report (errors + health, for dashboard and export) */
+export interface MonitoringReport {
+  dateRange: MonitoringDateRange
+  errorSummary: MonitoringErrorSummary
+  health?: MonitoringHealthSnapshot
+  recentErrors: MonitoringErrorEvent[]
+  errorTimeSeries?: { date: string; count: number }[]
+}

@@ -20,6 +20,8 @@ import {
   AlertCircle,
   Scale,
   SlidersHorizontal,
+  ImageIcon,
+  Bug,
 } from 'lucide-react'
 import {
   Sheet,
@@ -39,12 +41,14 @@ const mainNav = [
   { to: '/dashboard/order-booking-history', label: 'Order / Booking History', icon: ClipboardList },
   { to: '/dashboard/settings', label: 'Settings', icon: Settings, exact: true },
   { to: '/dashboard/settings/preferences', label: 'Preferences', icon: SlidersHorizontal },
+  { to: '/dashboard/brand-logo', label: 'Brand Logo', icon: ImageIcon },
 ]
 
 const adminNav = [
   { to: '/dashboard/users', label: 'Users', icon: Users },
   { to: '/dashboard/moderation', label: 'Moderation', icon: AlertCircle },
   { to: '/dashboard/disputes', label: 'Disputes & Refunds', icon: Scale },
+  { to: '/dashboard/monitoring', label: 'Monitoring', icon: Bug },
   { to: '/dashboard/admin', label: 'Admin', icon: Shield },
 ]
 

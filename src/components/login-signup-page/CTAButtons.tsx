@@ -27,11 +27,25 @@ export function CTAButtons({
     <div className={cn('space-y-4', className)}>
       <Button
         type="submit"
-        className="w-full transition-all duration-200 hover:scale-[1.02] hover:shadow-card-hover active:scale-[0.98]"
+        className={cn(
+          'w-full bg-primary bg-gradient-to-r from-primary to-primary/90',
+          'transition-all duration-200 hover:scale-[1.02] hover:shadow-card-hover active:scale-[0.98]',
+          'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+        )}
         disabled={isLoading || submitDisabled}
         aria-busy={isLoading}
       >
-        {isLoading ? 'Please wait...' : submitLabel}
+        {isLoading ? (
+          <span className="inline-flex items-center gap-2">
+            <span
+              className="h-4 w-4 shrink-0 rounded-full border-2 border-primary-foreground border-t-transparent animate-spin"
+              aria-hidden
+            />
+            Please wait...
+          </span>
+        ) : (
+          submitLabel
+        )}
       </Button>
       {children}
       <div className="relative">
@@ -45,7 +59,7 @@ export function CTAButtons({
       <Button
         type="button"
         variant="ghost"
-        className="w-full"
+        className="w-full focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         onClick={onSwitch}
         disabled={isLoading}
       >

@@ -70,14 +70,16 @@ export function EmailPasswordInputs({
           placeholder={emailPlaceholder}
           autoComplete="email"
           disabled={disabled}
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? `${emailId}-error` : undefined}
           className={cn(
-            'transition-colors duration-200 focus-visible:border-primary',
+            'transition-colors duration-200 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0',
             errors.email && 'border-destructive animate-shake'
           )}
           {...register('email')}
         />
         {errors.email && (
-          <p className="text-sm text-destructive" role="alert">
+          <p id={`${emailId}-error`} className="text-sm text-destructive" role="alert">
             {errors.email.message}
           </p>
         )}
@@ -91,8 +93,10 @@ export function EmailPasswordInputs({
             placeholder={passwordPlaceholder}
             autoComplete="new-password"
             disabled={disabled}
+            aria-invalid={Boolean(errors.password)}
+            aria-describedby={errors.password ? `${passwordId}-error` : undefined}
             className={cn(
-              'pr-10 transition-colors duration-200 focus-visible:border-primary',
+              'pr-10 transition-colors duration-200 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0',
               errors.password && 'border-destructive animate-shake'
             )}
             {...register('password')}
@@ -114,7 +118,7 @@ export function EmailPasswordInputs({
           </Button>
         </div>
         {errors.password && (
-          <p className="text-sm text-destructive" role="alert">
+          <p id={`${passwordId}-error`} className="text-sm text-destructive" role="alert">
             {errors.password.message}
           </p>
         )}

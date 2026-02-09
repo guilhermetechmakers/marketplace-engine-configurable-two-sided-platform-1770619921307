@@ -85,4 +85,13 @@
   .animate-fade-in {
     animation: fade-in 0.2s ease-out;
   }
+  /* Auth page gradient mesh background */
+  .auth-page-bg {
+    background: linear-gradient(
+      135deg,
+      rgb(var(--background)) 0%,
+      rgb(var(--muted) / 0.5) 50%,
+      rgb(var(--primary) / 0.08) 100%
+    );
+  }
 }

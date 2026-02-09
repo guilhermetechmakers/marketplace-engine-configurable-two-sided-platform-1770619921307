@@ -9,7 +9,7 @@ import { InputOTP } from '@/components/ui/input-otp'
 import { useAuth } from '@/contexts/auth-context'
 import { setup2FA, enable2FA } from '@/api/auth'
 import { toast } from 'sonner'
-import { User, Bell, Shield, ShieldCheck, Key, SlidersHorizontal } from 'lucide-react'
+import { User, Bell, Shield, ShieldCheck, Key, SlidersHorizontal, ImageIcon } from 'lucide-react'
 
 type TwoFactorStep = 'idle' | 'setup' | 'verifying'
 
@@ -75,12 +75,20 @@ export function DashboardSettings() {
           <h1 className="text-2xl font-semibold">Settings</h1>
           <p className="text-muted-foreground">Manage your account and preferences</p>
         </div>
-        <Button variant="outline" asChild className="gap-2 shrink-0">
-          <Link to="/dashboard/settings/preferences">
-            <SlidersHorizontal className="h-4 w-4" />
-            Full preferences
-          </Link>
-        </Button>
+        <div className="flex flex-wrap gap-2 shrink-0">
+          <Button variant="outline" asChild className="gap-2">
+            <Link to="/dashboard/brand-logo">
+              <ImageIcon className="h-4 w-4" />
+              Brand Logo
+            </Link>
+          </Button>
+          <Button variant="outline" asChild className="gap-2">
+            <Link to="/dashboard/settings/preferences">
+              <SlidersHorizontal className="h-4 w-4" />
+              Full preferences
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <Tabs defaultValue="profile" className="space-y-4">

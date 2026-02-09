@@ -99,8 +99,15 @@ export default function BookingHistory() {
   })
 
   const disputeMutation = useMutation({
-    mutationFn: ({ id, reason, description }: { id: string; reason: string; description?: string }) =>
-      openDisputeOrderBooking(id, { reason, description }),
+    mutationFn: ({
+      id,
+      reason,
+      description,
+    }: {
+      id: string
+      reason: string
+      description?: string
+    }) => openDisputeOrderBooking(id, { reason, description }),
     onSuccess: (_: unknown, { id }: { id: string }) => {
       queryClient.invalidateQueries({ queryKey: ['order-booking-history'] })
       queryClient.invalidateQueries({ queryKey: ['order-booking-detail', id] })
@@ -140,8 +147,15 @@ export default function BookingHistory() {
     })
   }, [items, sorting])
 
-  const handleOpenDispute = (orderId: string) => {
-    disputeMutation.mutate({ id: orderId, reason: 'Other' })
+  const handleOpenDispute = (
+    orderId: string,
+    payload?: { reason: string; description?: string }
+  ) => {
+    disputeMutation.mutate({
+      id: orderId,
+      reason: payload?.reason ?? 'Other',
+      description: payload?.description,
+    })
   }
 
   const handleRequestRefund = (orderId: string) => {
@@ -154,13 +168,13 @@ export default function BookingHistory() {
   }
 
   return (
-    <div className="space-y-6 animate-in">
+    <div className="space-y-6 animate-in fade-in-up">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Order / Booking History
           </h1>
-          <p className="text-muted-foreground">
+          <p className="mt-1 text-muted-foreground">
             View orders and bookings, request refunds, and open disputes
           </p>
         </div>
@@ -171,9 +185,9 @@ export default function BookingHistory() {
         />
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <CardTitle className="text-base">Orders &amp; bookings</CardTitle>
+      <Card className="overflow-hidden border-border shadow-card transition-shadow hover:shadow-card-hover">
+        <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border bg-muted/20">
+          <CardTitle className="text-base font-semibold">Orders &amp; bookings</CardTitle>
           <FiltersSearch
             filters={filters}
             onFiltersChange={(next) =>
@@ -207,19 +221,32 @@ export default function BookingHistory() {
               </Button>
             </div>
           ) : sortedItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <FileText className="h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-muted-foreground max-w-sm">
-                No orders or bookings yet. When you complete a purchase or
-                booking, it will appear here.
+            <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
+              <div className="rounded-2xl bg-muted/50 p-6 mb-4">
+                <FileText className="h-12 w-12 text-muted-foreground" aria-hidden />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                No orders or bookings yet
+              </h3>
+              <p className="text-muted-foreground max-w-sm mb-6">
+                When you complete a purchase or booking, it will appear here. Browse the catalog to find listings.
               </p>
-              <Button
-                variant="secondary"
-                className="mt-4 transition-transform hover:scale-[1.02] active:scale-[0.98]"
-                onClick={() => setFilters(defaultFilters)}
-              >
-                Clear filters
-              </Button>
+              <div className="flex flex-wrap gap-3 justify-center">
+                <Button
+                  variant="primary"
+                  className="transition-transform hover:scale-[1.02] hover:shadow-card active:scale-[0.98]"
+                  onClick={() => navigate('/catalog')}
+                >
+                  Browse catalog
+                </Button>
+                <Button
+                  variant="outline"
+                  className="transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                  onClick={() => setFilters(defaultFilters)}
+                >
+                  Clear filters
+                </Button>
+              </div>
             </div>
           ) : (
             <OrdersList

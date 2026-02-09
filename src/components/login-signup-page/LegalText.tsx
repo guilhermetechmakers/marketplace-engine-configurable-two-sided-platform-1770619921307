@@ -23,14 +23,14 @@ export function LegalText({
       By continuing, you agree to our{' '}
       <Link
         to={`/legal/${termsSlug}`}
-        className="text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+        className="text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
       >
         Terms of Service
       </Link>{' '}
       and{' '}
       <Link
         to={`/legal/${privacySlug}`}
-        className="text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+        className="text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
       >
         Privacy Policy
       </Link>

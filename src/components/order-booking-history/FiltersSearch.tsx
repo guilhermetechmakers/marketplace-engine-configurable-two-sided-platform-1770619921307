@@ -34,7 +34,7 @@ export interface OrderFiltersState {
   search: string
 }
 
-interface FiltersSearchProps {
+export interface FiltersSearchProps {
   filters: OrderFiltersState
   onFiltersChange: (f: Partial<OrderFiltersState>) => void
   onApply?: () => void

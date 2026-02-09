@@ -27,7 +27,9 @@ import { DashboardUsers } from '@/pages/dashboard/users'
 import { DashboardModeration } from '@/pages/dashboard/moderation'
 import { DashboardAdmin } from '@/pages/dashboard/admin'
 import { DashboardDisputes } from '@/pages/dashboard/disputes'
+import { DashboardMonitoring } from '@/pages/dashboard/monitoring'
 import { DashboardOrderDetail } from '@/pages/dashboard/order-detail'
+import { DashboardBrandLogo } from '@/pages/dashboard/brand-logo'
 import BookingHistory from '@/pages/Order/BookingHistory'
 import BrowseListings from '@/pages/Catalog/BrowseListings'
 import EditListing from '@/pages/Create/EditListing'
@@ -83,10 +85,12 @@ const dashboardRoutes = {
     { path: 'orders/:id', element: <DashboardOrderDetail /> },
     { path: 'settings', element: <DashboardSettings /> },
     { path: 'settings/preferences', element: <PreferencesPage /> },
+    { path: 'brand-logo', element: <DashboardBrandLogo /> },
     { path: 'users', element: <DashboardUsers /> },
     { path: 'moderation', element: <DashboardModeration /> },
     { path: 'admin', element: <DashboardAdmin /> },
     { path: 'disputes', element: <DashboardDisputes /> },
+    { path: 'monitoring', element: <DashboardMonitoring /> },
     { path: 'order-booking-history', element: <BookingHistory /> },
     { path: 'create-edit-listing', element: <EditListing /> },
     { path: 'create-edit-listing/:id', element: <EditListing /> },

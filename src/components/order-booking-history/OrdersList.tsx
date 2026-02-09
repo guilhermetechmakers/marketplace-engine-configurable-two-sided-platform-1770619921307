@@ -16,8 +16,10 @@ import {
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
 import type { OrderBookingHistory, OrderTransactionMode } from '@/types'
 import { cn } from '@/lib/utils'
+import { ChevronRight } from 'lucide-react'
 
 const statusVariant = (
   s: string
@@ -190,49 +192,121 @@ export function OrdersList({
   })
 
   return (
-    <div
-      className={cn(
-        'rounded-lg border border-border overflow-hidden transition-shadow hover:shadow-card',
-        className
-      )}
-    >
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="sticky top-0 bg-card z-10">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {!isLoading &&
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                className="cursor-pointer transition-colors hover:bg-muted/50 hover:shadow-sm"
-                onClick={() => onViewDetail(row.original)}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
-                  </TableCell>
+    <div className={cn('space-y-4', className)}>
+      {/* Desktop: table with sticky header and row hover */}
+      <div className="hidden md:block rounded-lg border border-border overflow-hidden bg-card transition-shadow shadow-card hover:shadow-card-hover">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="sticky top-0 z-10 bg-card border-b border-border font-medium"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
                 ))}
               </TableRow>
             ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {!isLoading &&
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="cursor-pointer transition-all duration-200 hover:bg-muted/50 hover:shadow-sm"
+                  onClick={() => onViewDetail(row.original)}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Mobile: card list */}
+      <div className="md:hidden space-y-3">
+        {!isLoading &&
+          orders.map((order) => (
+            <Card
+              key={order.id}
+              className={cn(
+                'cursor-pointer transition-all duration-200 hover:shadow-card-hover hover:border-primary/30 border-border rounded-xl'
+              )}
+              onClick={() => onViewDetail(order)}
+            >
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-foreground truncate">
+                      {order.title || `Order #${order.id.slice(0, 8)}`}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      {formatDate(order.created_at)} · {formatMode(order.transaction_mode)}
+                    </p>
+                  </div>
+                  <Badge variant={statusVariant(order.status)} className="shrink-0">
+                    {order.status.replace(/_/g, ' ')}
+                  </Badge>
+                </div>
+                <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
+                  <span className="text-sm font-medium">
+                    {formatAmount(order.amount_cents, order.currency ?? 'USD')}
+                  </span>
+                  <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                    {['active', 'pending'].includes(order.status) && onCancel && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive hover:bg-destructive/10 h-8"
+                        onClick={() => onCancel(order)}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                    {order.status === 'completed' && onRequestRefund && (
+                      <Button variant="ghost" size="sm" className="h-8" onClick={() => onRequestRefund(order)}>
+                        Refund
+                      </Button>
+                    )}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 gap-1"
+                      onClick={() => onViewDetail(order)}
+                    >
+                      View
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    {onContactSeller && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-muted-foreground h-8"
+                        onClick={() => onContactSeller(order)}
+                      >
+                        Contact
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+      </div>
     </div>
   )
 }

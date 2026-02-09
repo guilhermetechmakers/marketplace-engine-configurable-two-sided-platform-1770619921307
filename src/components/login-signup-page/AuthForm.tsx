@@ -90,10 +90,16 @@ export function AuthForm({
   }
 
   return (
-    <Card className="w-full max-w-md border-2 border-primary/10 shadow-card transition-all duration-300 hover:shadow-card-hover">
+    <Card
+      className={cn(
+        'w-full max-w-md border-2 shadow-card transition-all duration-300',
+        'hover:shadow-card-hover hover:border-primary/20',
+        'border-primary/10 bg-card'
+      )}
+    >
       <CardHeader className="text-center">
         {showProgress && (
-          <div className="mb-4">
+          <div className="mb-4" role="navigation" aria-label="Onboarding progress">
             <ProgressIndicators
               steps={progressSteps}
               currentStepId={currentProgressStep}
@@ -115,15 +121,19 @@ export function AuthForm({
           onValueChange={(v) => setMode(v as AuthMode)}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-2" role="tablist" aria-label="Login or sign up">
             <TabsTrigger
               value="login"
+              role="tab"
+              aria-selected={mode === 'login'}
               className="gap-2 transition-all duration-200 data-[state=active]:shadow-sm"
             >
               Log in
             </TabsTrigger>
             <TabsTrigger
               value="signup"
+              role="tab"
+              aria-selected={mode === 'signup'}
               className="gap-2 transition-all duration-200 data-[state=active]:shadow-sm"
             >
               Sign up
@@ -132,23 +142,28 @@ export function AuthForm({
 
           <TabsContent value="login" className="mt-6 space-y-4">
             <div className="space-y-2">
-              <span className="text-sm font-medium">I want to</span>
-              <div className="grid grid-cols-2 gap-2">
+              <span id="login-role-label" className="text-sm font-medium">I want to</span>
+              <div
+                className="grid grid-cols-2 gap-2"
+                role="group"
+                aria-labelledby="login-role-label"
+              >
                 <button
                   type="button"
                   onClick={() => {
                     setRole('buyer')
                     loginForm.setValue('role', 'buyer')
                   }}
+                  aria-pressed={role === 'buyer'}
                   className={cn(
-                    'flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
+                    'flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] hover:shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                     role === 'buyer'
                       ? 'border-primary bg-primary/10 text-primary'
                       : 'border-border hover:bg-muted'
                   )}
                 >
-                  <User className="h-5 w-5" />
-                  Buy
+                  <User className="h-5 w-5" aria-hidden />
+                  Buyer
                 </button>
                 <button
                   type="button"
@@ -156,15 +171,16 @@ export function AuthForm({
                     setRole('seller')
                     loginForm.setValue('role', 'seller')
                   }}
+                  aria-pressed={role === 'seller'}
                   className={cn(
-                    'flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
+                    'flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] hover:shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                     role === 'seller'
                       ? 'border-primary bg-primary/10 text-primary'
                       : 'border-border hover:bg-muted'
                   )}
                 >
-                  <Store className="h-5 w-5" />
-                  Sell
+                  <Store className="h-5 w-5" aria-hidden />
+                  Seller
                 </button>
               </div>
               <input type="hidden" {...loginForm.register('role')} />
@@ -190,23 +206,28 @@ export function AuthForm({
 
           <TabsContent value="signup" className="mt-6 space-y-4">
             <div className="space-y-2">
-              <span className="text-sm font-medium">I want to</span>
-              <div className="grid grid-cols-2 gap-2">
+              <span id="signup-role-label" className="text-sm font-medium">I want to</span>
+              <div
+                className="grid grid-cols-2 gap-2"
+                role="group"
+                aria-labelledby="signup-role-label"
+              >
                 <button
                   type="button"
                   onClick={() => {
                     setRole('buyer')
                     signupForm.setValue('role', 'buyer')
                   }}
+                  aria-pressed={role === 'buyer'}
                   className={cn(
-                    'flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
+                    'flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] hover:shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                     role === 'buyer'
                       ? 'border-primary bg-primary/10 text-primary'
                       : 'border-border hover:bg-muted'
                   )}
                 >
-                  <User className="h-5 w-5" />
-                  Buy
+                  <User className="h-5 w-5" aria-hidden />
+                  Buyer
                 </button>
                 <button
                   type="button"
@@ -214,15 +235,16 @@ export function AuthForm({
                     setRole('seller')
                     signupForm.setValue('role', 'seller')
                   }}
+                  aria-pressed={role === 'seller'}
                   className={cn(
-                    'flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
+                    'flex items-center justify-center gap-2 rounded-lg border-2 p-3 text-sm font-medium transition-all duration-200 hover:scale-[1.02] hover:shadow-sm active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                     role === 'seller'
                       ? 'border-primary bg-primary/10 text-primary'
                       : 'border-border hover:bg-muted'
                   )}
                 >
-                  <Store className="h-5 w-5" />
-                  Sell
+                  <Store className="h-5 w-5" aria-hidden />
+                  Seller
                 </button>
               </div>
               <input type="hidden" {...signupForm.register('role')} />
