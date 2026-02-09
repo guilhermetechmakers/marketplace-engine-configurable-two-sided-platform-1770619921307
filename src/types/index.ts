@@ -54,3 +54,62 @@ export interface MessageThread {
   lastMessage?: { body: string; createdAt: string }
   unreadCount: number
 }
+
+/** Dispute & refunds */
+export type DisputeStatus =
+  | 'open'
+  | 'under_review'
+  | 'awaiting_evidence'
+  | 'resolved'
+  | 'refunded'
+  | 'closed'
+
+export interface DisputeEvidence {
+  id: string
+  disputeId: string
+  uploadedBy: string
+  type: 'image' | 'document' | 'note'
+  url?: string
+  note?: string
+  createdAt: string
+}
+
+export interface DisputeTimelineEvent {
+  id: string
+  disputeId: string
+  type: 'created' | 'status_change' | 'evidence_added' | 'resolution' | 'refund_processed'
+  actorId?: string
+  actorRole?: string
+  payload?: Record<string, unknown>
+  createdAt: string
+}
+
+export interface Dispute {
+  id: string
+  orderId: string
+  buyerId: string
+  sellerId: string
+  amountCents: number
+  currency: string
+  reason: string
+  description?: string
+  status: DisputeStatus
+  evidence: DisputeEvidence[]
+  timeline: DisputeTimelineEvent[]
+  resolution?: string
+  resolutionAt?: string
+  refundId?: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface Refund {
+  id: string
+  disputeId: string
+  orderId: string
+  amountCents: number
+  currency: string
+  status: 'pending' | 'processed' | 'failed'
+  processedAt?: string
+  createdAt: string
+}

@@ -24,6 +24,7 @@ import { DashboardOrders } from '@/pages/dashboard/orders'
 import { DashboardUsers } from '@/pages/dashboard/users'
 import { DashboardModeration } from '@/pages/dashboard/moderation'
 import { DashboardAdmin } from '@/pages/dashboard/admin'
+import { DashboardDisputes } from '@/pages/dashboard/disputes'
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -67,6 +68,7 @@ const dashboardRoutes = {
     { path: 'users', element: <DashboardUsers /> },
     { path: 'moderation', element: <DashboardModeration /> },
     { path: 'admin', element: <DashboardAdmin /> },
+    { path: 'disputes', element: <DashboardDisputes /> },
   ],
 }
 

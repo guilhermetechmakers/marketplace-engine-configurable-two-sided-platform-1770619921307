@@ -17,6 +17,7 @@ import {
   MessageSquare,
   FileText,
   AlertCircle,
+  Scale,
 } from 'lucide-react'
 import {
   Sheet,
@@ -38,6 +39,7 @@ const mainNav = [
 const adminNav = [
   { to: '/dashboard/users', label: 'Users', icon: Users },
   { to: '/dashboard/moderation', label: 'Moderation', icon: AlertCircle },
+  { to: '/dashboard/disputes', label: 'Disputes & Refunds', icon: Scale },
   { to: '/dashboard/admin', label: 'Admin', icon: Shield },
 ]
 
