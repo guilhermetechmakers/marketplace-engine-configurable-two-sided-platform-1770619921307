@@ -647,23 +647,11 @@ All dashboard pages should be nested inside the dashboard layout, not separate r
 6. **Be Modern** - Use current design trends and technologies
 7. **Be Unique** - Each project should have its own personality
 8. **Be Intuitive** - Users shouldn't need instructions
- for bestpractices and # User Authentication
+ for bestpractices and # Brand Logo
 
 ## Complete Description
 
-Signup, login, logout, session management, social OAuth, role selection and secure token handling.
-
-**Scope Context:**
-- **Type:** page
-- **Purpose:** Authentication entry page supporting email/password, social OAuth, role selection (buyer/seller), and links to password reset and email verification status.
-
-**Required Elements:**
-- Auth Form: toggle between login and signup, role selector chip (buyer/seller)
-- Social Login Buttons: Google, Apple, Facebook (configurable)
-- Email Input, Password Input: strength meter, show/hide toggle
-- CTA Buttons: primary submit, switch to signup/login
-- Legal Text: links to Terms and Privacy
-- Progress Indicators: for multi-step seller onboarding redirect
+Dashboards and exportable reports for GMV, conversion funnels, listings performance, disputes, and moderation metrics.
 
 ## UI Guidelines
 
@@ -674,13 +662,6 @@ Signup, login, logout, session management, social OAuth, role selection and secu
 - Implement responsive design (mobile-first approach)
 
 **Component Structure:**
-- Main page container with proper layout
-- Header section with title and actions
-- Content area with data display/forms
-- Loading states with skeleton loaders
-- Error states with user-friendly messages
-- Empty states with helpful guidance
-
 **Visual States:**
 - Initial/Empty: Clear placeholder content
 - Loading: Skeleton loaders or spinners
@@ -695,33 +676,13 @@ Signup, login, logout, session management, social OAuth, role selection and secu
 
 ## Components and Pages to Build
 
-**Main Page:**
-- `src/pages/Login/SignupPage.tsx` - Main page component
-- Export default page component
-- Implement data fetching with React Query or SWR
-- Handle loading and error states
-
-**Related Components:**
-- `src/components/login-/-signup-page/AuthForm:togglebetweenloginandsignup,roleselectorchip(buyer/seller).tsx`
-- `src/components/login-/-signup-page/SocialLoginButtons:Google,Apple,Facebook(configurable).tsx`
-- `src/components/login-/-signup-page/EmailInput,PasswordInput:strengthmeter,show/hidetoggle.tsx`
-- `src/components/login-/-signup-page/CTAButtons:primarysubmit,switchtosignup/login.tsx`
-- `src/components/login-/-signup-page/LegalText:linkstoTermsandPrivacy.tsx`
-- `src/components/login-/-signup-page/ProgressIndicators:formulti-stepselleronboardingredirect.tsx`
-
 ## Navigation Between Components and Pages
 
 **Routing Setup:**
-- Add route: `/login-/-signup-page` in your routing configuration
-- Update navigation menu to include this page
-- Ensure proper route guards if authentication is required
-
 **Navigation Flow:**
-- **Seller Login or Signup:**
-- **Buyer Login or Signup:**
-- **Email Verification Check:**
-  - True path: Continue forward
-  - False path: Alternative route
+- User accesses this feature from the main navigation
+- After completion, return to dashboard or previous page
+- Provide clear back navigation options
 
 **Integration Points:**
 - Update navigation components to include new routes
@@ -729,89 +690,27 @@ Signup, login, logout, session management, social OAuth, role selection and secu
 
 ## Userflow
 
-**Complete User Journey:**
+**Standard User Journey:**
 
-1. **Seller Login or Signup** (step_page)
-   - Seller initiates authentication, choosing seller role.
-   - Page type: Standard page
-
-2. **Buyer Login or Signup** (step_page)
-   - Buyer initiates login or signup, with options for email/password or social OAuth.
-   - Page type: Standard page
-
-3. **Email Verification Check** (condition_branch)
-   - System checks if buyer's email is verified before enabling full access.
-   - Condition: Check condition
+1. User navigates to the feature from main menu
+2. User views the main interface and available options
+3. User interacts with the feature (CRUD operations)
+4. System provides feedback on actions
+5. User completes their task and receives confirmation
+6. User can navigate to related features or return to dashboard
 
 ## Data Schema to be Implemented
 
-**Database Tables:**
-
-```sql
--- login_/_signup_page table
-CREATE TABLE login_/_signup_page (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  title TEXT NOT NULL,
-  description TEXT,
-  status TEXT DEFAULT 'active',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
-
-**Row Level Security (RLS):**
-
-```sql
--- Enable RLS
-ALTER TABLE login_/_signup_page ENABLE ROW LEVEL SECURITY;
-
--- Users can read their own data
-CREATE POLICY "login_/_signup_page_read_own" ON login_/_signup_page
-  FOR SELECT USING (auth.uid() = user_id);
-
--- Users can insert their own data
-CREATE POLICY "login_/_signup_page_insert_own" ON login_/_signup_page
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
-
--- Users can update their own data
-CREATE POLICY "login_/_signup_page_update_own" ON login_/_signup_page
-  FOR UPDATE USING (auth.uid() = user_id);
-
--- Users can delete their own data
-CREATE POLICY "login_/_signup_page_delete_own" ON login_/_signup_page
-  FOR DELETE USING (auth.uid() = user_id);
-```
-
-**TypeScript Types:**
-
-```typescript
-interface Login/SignupPage {
-  id: string;
-  user_id: string;
-  title: string;
-  description?: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
-```
+**Data Handling:**
+- This feature primarily uses existing data models
+- Integrate with current database tables as needed
+- Ensure proper TypeScript types for all data structures
 
 ## Acceptance Criteria
 
 **Functional Requirements:**
-- [ ] Login / Signup Page is fully implemented according to scope
+- [ ] Brand Logo is fully implemented according to scope
 - [ ] All required elements are present and functional
-- [ ] Auth Form: toggle between login and signup, role selector chip (buyer/seller) is implemented and working
-- [ ] Social Login Buttons: Google, Apple, Facebook (configurable) is implemented and working
-- [ ] Email Input, Password Input: strength meter, show/hide toggle is implemented and working
-- [ ] CTA Buttons: primary submit, switch to signup/login is implemented and working
-- [ ] Legal Text: links to Terms and Privacy is implemented and working
-- [ ] Progress Indicators: for multi-step seller onboarding redirect is implemented and working
-- [ ] User flows work end-to-end without errors:
-  - [ ] Seller Login or Signup
-  - [ ] Buyer Login or Signup
-  - [ ] Email Verification Check
 - [ ] Proper error handling and user feedback
 - [ ] Loading states are implemented
 - [ ] Empty states are designed
@@ -822,12 +721,6 @@ interface Login/SignupPage {
 - [ ] No console errors or warnings
 - [ ] Responsive design works on mobile, tablet, and desktop
 - [ ] Accessibility standards are met (WCAG 2.1 AA)
-- [ ] Page is accessible via navigation
-- [ ] SEO meta tags are configured
-- [ ] Page title is descriptive
-- [ ] Database schema is created
-- [ ] RLS policies are properly configured
-- [ ] CRUD operations work correctly
 
 **Integration:**
 - [ ] No breaking changes to existing features
@@ -862,23 +755,11 @@ CRITICAL TECHNICAL REQUIREMENTS:
 - When Supabase is configured: use Edge Functions for LLM and server-only logic; never expose API keys in the client
 
 === TASK ===
-# User Authentication
+# Brand Logo
 
 ## Complete Description
 
-Signup, login, logout, session management, social OAuth, role selection and secure token handling.
-
-**Scope Context:**
-- **Type:** page
-- **Purpose:** Authentication entry page supporting email/password, social OAuth, role selection (buyer/seller), and links to password reset and email verification status.
-
-**Required Elements:**
-- Auth Form: toggle between login and signup, role selector chip (buyer/seller)
-- Social Login Buttons: Google, Apple, Facebook (configurable)
-- Email Input, Password Input: strength meter, show/hide toggle
-- CTA Buttons: primary submit, switch to signup/login
-- Legal Text: links to Terms and Privacy
-- Progress Indicators: for multi-step seller onboarding redirect
+Dashboards and exportable reports for GMV, conversion funnels, listings performance, disputes, and moderation metrics.
 
 ## UI Guidelines
 
@@ -889,13 +770,6 @@ Signup, login, logout, session management, social OAuth, role selection and secu
 - Implement responsive design (mobile-first approach)
 
 **Component Structure:**
-- Main page container with proper layout
-- Header section with title and actions
-- Content area with data display/forms
-- Loading states with skeleton loaders
-- Error states with user-friendly messages
-- Empty states with helpful guidance
-
 **Visual States:**
 - Initial/Empty: Clear placeholder content
 - Loading: Skeleton loaders or spinners
@@ -910,33 +784,13 @@ Signup, login, logout, session management, social OAuth, role selection and secu
 
 ## Components and Pages to Build
 
-**Main Page:**
-- `src/pages/Login/SignupPage.tsx` - Main page component
-- Export default page component
-- Implement data fetching with React Query or SWR
-- Handle loading and error states
-
-**Related Components:**
-- `src/components/login-/-signup-page/AuthForm:togglebetweenloginandsignup,roleselectorchip(buyer/seller).tsx`
-- `src/components/login-/-signup-page/SocialLoginButtons:Google,Apple,Facebook(configurable).tsx`
-- `src/components/login-/-signup-page/EmailInput,PasswordInput:strengthmeter,show/hidetoggle.tsx`
-- `src/components/login-/-signup-page/CTAButtons:primarysubmit,switchtosignup/login.tsx`
-- `src/components/login-/-signup-page/LegalText:linkstoTermsandPrivacy.tsx`
-- `src/components/login-/-signup-page/ProgressIndicators:formulti-stepselleronboardingredirect.tsx`
-
 ## Navigation Between Components and Pages
 
 **Routing Setup:**
-- Add route: `/login-/-signup-page` in your routing configuration
-- Update navigation menu to include this page
-- Ensure proper route guards if authentication is required
-
 **Navigation Flow:**
-- **Seller Login or Signup:**
-- **Buyer Login or Signup:**
-- **Email Verification Check:**
-  - True path: Continue forward
-  - False path: Alternative route
+- User accesses this feature from the main navigation
+- After completion, return to dashboard or previous page
+- Provide clear back navigation options
 
 **Integration Points:**
 - Update navigation components to include new routes
@@ -944,89 +798,27 @@ Signup, login, logout, session management, social OAuth, role selection and secu
 
 ## Userflow
 
-**Complete User Journey:**
+**Standard User Journey:**
 
-1. **Seller Login or Signup** (step_page)
-   - Seller initiates authentication, choosing seller role.
-   - Page type: Standard page
-
-2. **Buyer Login or Signup** (step_page)
-   - Buyer initiates login or signup, with options for email/password or social OAuth.
-   - Page type: Standard page
-
-3. **Email Verification Check** (condition_branch)
-   - System checks if buyer's email is verified before enabling full access.
-   - Condition: Check condition
+1. User navigates to the feature from main menu
+2. User views the main interface and available options
+3. User interacts with the feature (CRUD operations)
+4. System provides feedback on actions
+5. User completes their task and receives confirmation
+6. User can navigate to related features or return to dashboard
 
 ## Data Schema to be Implemented
 
-**Database Tables:**
-
-```sql
--- login_/_signup_page table
-CREATE TABLE login_/_signup_page (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  title TEXT NOT NULL,
-  description TEXT,
-  status TEXT DEFAULT 'active',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
-
-**Row Level Security (RLS):**
-
-```sql
--- Enable RLS
-ALTER TABLE login_/_signup_page ENABLE ROW LEVEL SECURITY;
-
--- Users can read their own data
-CREATE POLICY "login_/_signup_page_read_own" ON login_/_signup_page
-  FOR SELECT USING (auth.uid() = user_id);
-
--- Users can insert their own data
-CREATE POLICY "login_/_signup_page_insert_own" ON login_/_signup_page
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
-
--- Users can update their own data
-CREATE POLICY "login_/_signup_page_update_own" ON login_/_signup_page
-  FOR UPDATE USING (auth.uid() = user_id);
-
--- Users can delete their own data
-CREATE POLICY "login_/_signup_page_delete_own" ON login_/_signup_page
-  FOR DELETE USING (auth.uid() = user_id);
-```
-
-**TypeScript Types:**
-
-```typescript
-interface Login/SignupPage {
-  id: string;
-  user_id: string;
-  title: string;
-  description?: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
-```
+**Data Handling:**
+- This feature primarily uses existing data models
+- Integrate with current database tables as needed
+- Ensure proper TypeScript types for all data structures
 
 ## Acceptance Criteria
 
 **Functional Requirements:**
-- [ ] Login / Signup Page is fully implemented according to scope
+- [ ] Brand Logo is fully implemented according to scope
 - [ ] All required elements are present and functional
-- [ ] Auth Form: toggle between login and signup, role selector chip (buyer/seller) is implemented and working
-- [ ] Social Login Buttons: Google, Apple, Facebook (configurable) is implemented and working
-- [ ] Email Input, Password Input: strength meter, show/hide toggle is implemented and working
-- [ ] CTA Buttons: primary submit, switch to signup/login is implemented and working
-- [ ] Legal Text: links to Terms and Privacy is implemented and working
-- [ ] Progress Indicators: for multi-step seller onboarding redirect is implemented and working
-- [ ] User flows work end-to-end without errors:
-  - [ ] Seller Login or Signup
-  - [ ] Buyer Login or Signup
-  - [ ] Email Verification Check
 - [ ] Proper error handling and user feedback
 - [ ] Loading states are implemented
 - [ ] Empty states are designed
@@ -1037,12 +829,6 @@ interface Login/SignupPage {
 - [ ] No console errors or warnings
 - [ ] Responsive design works on mobile, tablet, and desktop
 - [ ] Accessibility standards are met (WCAG 2.1 AA)
-- [ ] Page is accessible via navigation
-- [ ] SEO meta tags are configured
-- [ ] Page title is descriptive
-- [ ] Database schema is created
-- [ ] RLS policies are properly configured
-- [ ] CRUD operations work correctly
 
 **Integration:**
 - [ ] No breaking changes to existing features
